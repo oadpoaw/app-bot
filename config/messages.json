@@ -1,0 +1,7 @@
+{
+    "commandthrottle": "⏲️ Slow down! Please wait **{cooldown}** to use this command again.",
+    "missingPermissions": "`Error`You do not have the permission to execute this command.",
+    "clientMissingPermissions": "`Error`: Missing Bot Permissions\n```xl\n{PERMS}\n```",
+    "missingArguments": "`Error`: Missing Arguments\nThe proper usage would be\n```xl\n{USAGE}\n```",
+    "commandError": "`Error`: Unexpected error occured : {ERRORNAME} \n```xl\n{ERROR}\n```"
+}
