@@ -55,7 +55,8 @@ module.exports = class MessageEvent extends BaseEvent {
             const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
             if (now < expirationTime) {
                 const timeLeft = ms(expirationTime - now);
-                message.channel.send(messages.commandthrottle.replace(/{cooldown}/g, timeLeft.toString()));
+                message.channel.send(messages.commandthrottle.replace(/{COOLDOWN}/g, timeLeft.toString()));
+                return;
             }
         }
         try {
@@ -68,7 +69,8 @@ module.exports = class MessageEvent extends BaseEvent {
                 }, cooldownAmount);
             }
         } catch (e) {
-            message.channel.send(client.trim(client.clean(messages.commandError.replace(/{ERRORNAME}/g, e.name).replace(/{ERROR}/g, e)), 1024));
+            const content = client.trim(await client.clean(messages.commandError.replace(/{ERRORNAME}/g, e.name).replace(/{ERROR}/g, e)), 1024)
+            message.channel.send(`${content}`);
         }
 
     }

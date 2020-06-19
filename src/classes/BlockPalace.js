@@ -1,4 +1,4 @@
-const { Client, Collection, Message, MessageEmbed } = require('discord.js');
+const { Client, Collection, Message, TextChannel, MessageEmbed } = require('discord.js');
 const path = require('path');
 const fs = require('fs').promises;
 
@@ -64,13 +64,13 @@ class BPClient extends Client {
     }
     /**
      * @returns {Promise<String>|Promise<Message>}
-     * @param {Message} message 
+     * @param {Message|TextChannel} message 
      * @param {String|MessageEmbed} question 
-     * @param {Number} duration 
-     * @param {Boolean} obj if true, returns the message object collected
+     * @param {Number} duration in millieseconds
+     * @param {Boolean} obj if true, returns the message object collected not message content
      */
-    async awaitReply(message, question, duration = 60000, obj = false) {
-        const filter = m => m.author.id === message.author.id;
+    async awaitReply(message, author, question, duration = 60000, obj = false) {
+        const filter = m => m.author.id === author;
         await message.channel.send(question);
         try {
             const collected = await message.channel.awaitMessages(filter, { max: 1, time: duration, errors: ['time'] });

@@ -1,7 +1,15 @@
 {
-    "commandthrottle": "⏲️ Slow down! Please wait **{cooldown}** to use this command again.",
+    "commandthrottle": "⏲️ Slow down! Please wait **{COOLDOWN}** to use this command again.",
     "missingPermissions": "`Error`You do not have the permission to execute this command.",
     "clientMissingPermissions": "`Error`: Missing Bot Permissions\n```xl\n{PERMS}\n```",
     "missingArguments": "`Error`: Missing Arguments\nThe proper usage would be\n```xl\n{USAGE}\n```",
-    "commandError": "`Error`: Unexpected error occured : {ERRORNAME} \n```xl\n{ERROR}\n```"
+    "commandError": "`Error`: Unexpected error occured : {ERRORNAME} \n```xl\n{ERROR}\n```",
+    "accepted": "Your staff application has been accepted : {REASON}",
+    "rejected": "Your staff application has been rejected : {REASON}",
+    "creation": "Your staff application interview is now going on {CHANNEL}",
+    "pending": "Your application is now pending for approval.",
+    "defaultReasons": {
+        "accepted": "You've met the requirements and congratulations on your staff position!",
+        "rejected": "You did not met the requirements or unsuitable for the staff position, please try again in 3 months i guess."
+    }
 }

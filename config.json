@@ -5,8 +5,7 @@
         "warnings": true
     },
     "botsettings": {
-        "accepterRoleID": "THE ROLE CAN ACCEPT/REJECT APPLICATIONS",
-        "logChannelID": "THE CHANNEL ID WHERE APPLICATIONS ARE BEING SENT",
-        "applicationID": "THE CATEGORY CHANNEL WHERE APPLICATIONS ARE BEING HANDLED"
+        "accepterRoleID": "607953764585832449",
+        "logChannelID": "720912038393806870"
     }
 }
