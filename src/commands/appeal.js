@@ -2,13 +2,13 @@ const BaseCommand = require('../structures/BaseCommand');
 const { Client } = require('../classes/BlockPalace');
 const { Message, MessageEmbed } = require('discord.js');
 
-const { staff_questions: questions } = require('../../config/questions.json');
+const { appeal_questions: questions } = require('../../config/questions.json');
 const messages = require('../../config/messages.json');
 const { botsettings } = require('../../config.json');
 
 module.exports = class extends BaseCommand {
     constructor() {
-        super('apply', {
+        super('appeal', {
             aliases: [],
             clientPermissions: ['MANAGE_CHANNELS', 'MANAGE_ROLES'],
             cooldown: 60 * 60,
@@ -24,14 +24,14 @@ module.exports = class extends BaseCommand {
      */
     async execute(client, message, args) {
         await message.delete();
-        const app = await client.dbModels.application.findOne({ where: { user_id: message.author.id } });
-        if (app || message.guild.channels.cache.find((c) => c.name === 'application')) {
-            message.channel.send('Sorry, you already applied for staff position or there is an application on going right now');
+        const app = await client.dbModels.unban.findOne({ where: { user_id: message.author.id } });
+        if (app || message.guild.channels.cache.find((c) => c.name === 'ban-appeal')) {
+            message.channel.send('Sorry, you already applied for a ban appeal or there is a ban appeal interview on going right now');
             return true;
         }
-        const channel = await message.guild.channels.create('application', {
+        const channel = await message.guild.channels.create('ban-appeal', {
             type: 'text',
-            topic: `Application ID: ${message.author.id}\nApplicant : ${message.author.tag}`,
+            topic: `Appeal ID: ${message.author.id}\nApplicant : ${message.author.tag}`,
             permissionOverwrites: [
                 {
                     id: message.guild.id,
@@ -48,7 +48,7 @@ module.exports = class extends BaseCommand {
             ]
         });
 
-        const msg = await channel.send(`${message.author} Staff Interview on going...`);
+        const msg = await channel.send(`${message.author} Ban Appeal Interview on going...`);
 
         let ApplicationResponse = '';
 
@@ -62,7 +62,7 @@ module.exports = class extends BaseCommand {
             ApplicationResponse += `> ${question}\nResponse: ${response}\n\n------------------------------------\n`;
         }
         if (ApplicationResponse === 'CANCELLED') {
-            await channel.send('Application Interview has been cancelled\n\nDeleting this channel in 10 seconds...');
+            await channel.send('Ban Appeal Interview has been cancelled\n\nDeleting this channel in 10 seconds...');
             setTimeout(() => {
                 channel.delete();
             }, 10000)
@@ -76,7 +76,7 @@ module.exports = class extends BaseCommand {
             channel.delete();
         }, 10000);
 
-        await client.dbModels.application.create(
+        await client.dbModels.unban.create(
             {
                 user_id: message.author.id,
                 data: {
@@ -91,7 +91,7 @@ module.exports = class extends BaseCommand {
             .setColor('RANDOM')
             .setTimestamp()
             .setAuthor(message.author.tag, message.author.displayAvatarURL() || null)
-            .setDescription(`Someone applied for staff!\nApplication ID: \`${message.author.id}\`\nApplicant: \`${message.author.tag}\`\n\nTo view application response use \`%application --fetch=<APPLICATION ID>\``)
+            .setDescription(`Someone applied for a ban appeal!\nAppeal ID: \`${message.author.id}\`\nApplicant: \`${message.author.tag}\`\n\nTo view appeal response use \`%appeals --fetch=<Appeal ID>\``)
         );
     }
 }

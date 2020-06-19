@@ -52,10 +52,10 @@ module.exports = class extends BaseCommand {
         return message.channel.send(new MessageEmbed()
             .setColor('RANDOM')
             .setTitle('Commands')
-            .setDescription(`Prefix: \`${prefix}\``)
-            .addField('Commands', `\`ping\`, \`apply\`, \`help\``)
-            .addField('Admin Commands', `\`applications\`, \`accept\`, \`reject\``)
-            .setFooter('Powered by Unicron Bot')
+            .setDescription(`Prefix: \`${prefix}\`\n\`help [Command]\``)
+            .addField('Commands', `\`ping\`, \`apply\`, \`appeal\`, \`help\``)
+            .addField('Admin Commands', `\`applications\`, \`accept\`, \`reject\`, \`accept-appeal\`, \`appeals\`, \`reject-appeal\``)
+            .setFooter('Powered by undefine')
         );
     }
 }

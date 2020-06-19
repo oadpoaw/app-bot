@@ -21,6 +21,7 @@ class BPClient extends Client {
         this.database = new Database();
         this.dbModels = {
             application: this.database.import('../models/application'),
+            unban: this.database.import('../models/unbans'),
         }
         require('../modules/ErrorHandler')(this);
         if (process.argv.includes('-f') || process.argv.includes('--force')) {

@@ -45,14 +45,14 @@ module.exports = class extends BaseCommand {
         message.channel.send(new MessageEmbed()
             .setColor(0x0FF00)
             .setAuthor(message.author.tag, message.author.displayAvatarURL() || null)
-            .setDescription(`Application \`${app.user_id}\` of ${applicant} has been accepted for:\n${args.reason}`)
+            .setDescription(`Application \`${app.user_id}\` of ${applicant} has been approved for:\n${args.reason}`)
             .setTimestamp()
         );
         try {
             const dm = await applicant.createDM();
             dm.send(new MessageEmbed()
                 .setColor(0x00FF00)
-                .setTitle('Your Staff Application on BlockPalace was approved.')
+                .setTitle('Your Staff Application on BlockPalace has been approved')
                 .setTimestamp()
                 .addField('Reason(s)', args.reason)
                 ).catch(e => { throw e });

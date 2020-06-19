@@ -10,6 +10,8 @@
     "pending": "Your application is now pending for approval.",
     "defaultReasons": {
         "accepted": "You've met the requirements and congratulations on your staff position!",
-        "rejected": "You did not met the requirements or unsuitable for the staff position, please try again in 3 months i guess."
+        "rejected": "You did not met the requirements or unsuitable for the staff position, please try again in 3 months i guess.",
+        "appeal_accepted": "You've met the requirements and congratulations your are now unbanned!",
+        "appeal_rejected": "You did not met the requirements or not worthy for an appeal, please try again in 3 months i guess"
     }
 }

@@ -7,11 +7,11 @@ const { botsettings } = require('../../config.json');
 
 module.exports = class extends BaseCommand {
     constructor() {
-        super('reject', {
+        super('reject-appeal', {
             aliases: [],
             clientPermissions: [],
             cooldown: 10,
-            usage: 'reject --id=<Application ID>\nreject --id=<Application ID> -r [...Reason]',
+            usage: 'reject-appeal --id=<Appeal ID>\nreject-appeal --id=<Appeal ID> -r [...Reason]',
             args: true,
             argsDefinitions: {
                 arguments: 'string',
@@ -23,7 +23,7 @@ module.exports = class extends BaseCommand {
                 reason: {
                     type: 'string',
                     alias: 'r',
-                    default: defaultReasons.rejected,
+                    default: defaultReasons.appeal_rejected,
                 }
             }
         })
@@ -36,29 +36,29 @@ module.exports = class extends BaseCommand {
      */
     async execute(client, message, args) {
         if (!message.member.roles.cache.has(botsettings.accepterRoleID)) return;
-        const app = await client.dbModels.application.findOne({ where: { user_id: args.id } });
+        const app = await client.dbModels.unban.findOne({ where: { user_id: args.id } });
         if (!app) {
-            message.channel.send(`An Application with an ID of \`${args.id}\` does not exist`);
+            message.channel.send(`An Appeal with an ID of \`${args.id}\` does not exist`);
             return true;
         }
         const applicant = await client.users.fetch(args.id);
         message.channel.send(new MessageEmbed()
             .setColor('RED')
             .setAuthor(message.author.tag, message.author.displayAvatarURL() || null)
-            .setDescription(`Application \`${app.user_id}\` of ${applicant} has been denied for:\n${args.reason}`)
+            .setDescription(`Ban Appeal Application \`${app.user_id}\` of ${applicant} has been denied for:\n${args.reason}`)
             .setTimestamp()
         );
         try {
             const dm = await applicant.createDM();
             dm.send(new MessageEmbed()
                 .setColor('RED')
-                .setTitle('Your Staff Application on BlockPalace has been denied.')
+                .setTitle('Your Ban Appeal Application on BlockPalace has been denied.')
                 .setTimestamp()
                 .addField('Reason(s)', args.reason)
             ).catch(e => { throw e });
         } catch (e) {
             message.channel.send(`${applicant.tag} was not notified about his/her application, He/she had DMs Off`);
         }
-        await client.dbModels.application.destroy({ where: { user_id: args.id } });
+        await client.dbModels.unban.destroy({ where: { user_id: args.id } });
     }
 }
