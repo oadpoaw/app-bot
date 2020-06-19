@@ -46,8 +46,8 @@ module.exports = class extends BaseCommand {
         if (args.fetch) {
             const user = await client.dbModels.application.findOne({ where: { user_id: args.fetch } });
             if (!user) return message.channel.send(`An application ID of \`${args.fetch}\` does not exist in the database`);
-            const app = path.join(__dirname, `temp.txt`);
             if (args.file) {
+                const app = path.join(__dirname, `temp.txt`);
                 await fs.writeFile(app, user.data.response.split('------------------------------------').join('\r\n'), {
                     encoding: 'utf8'
                 }).then(async () => {
@@ -67,7 +67,7 @@ module.exports = class extends BaseCommand {
                 embed.addField('\u200b', client.trim(m, 1024));
             });
             message.channel.send(embed);
-            return;
+            return true;
         }
         const applications = await client.dbModels.application.findAll();
         const apps = client.chunk(applications, 3);

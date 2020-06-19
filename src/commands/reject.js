@@ -55,7 +55,7 @@ module.exports = class extends BaseCommand {
                 .setTitle('Your Staff Application on BlockPalace was denied.')
                 .setTimestamp()
                 .addField('Reason(s)', args.reason)
-            );
+            ).catch(e => { throw e });
         } catch (e) {
             message.channel.send(`${applicant.tag} was not notified about his/her application, He/she had DMs Off`);
         }

@@ -11,7 +11,7 @@ module.exports = class extends BaseCommand {
         super('apply', {
             aliases: [],
             clientPermissions: ['MANAGE_CHANNELS', 'MANAGE_ROLES'],
-            cooldown: 60 * 60 * 24,
+            cooldown: 60 * 60,
             usage: '',
             args: false,
         });
@@ -23,10 +23,7 @@ module.exports = class extends BaseCommand {
      * @param {Array<String>|JSON} args 
      */
     async execute(client, message, args) {
-        if (message.channel.parentID === botsettings.categoryID) {
-            message.channel.send('Woah, you can\'t apply here');
-            return true;
-        }
+        await message.delete();
         const app = await client.dbModels.application.findOne({ where: { user_id: message.author.id } });
         if (app || message.guild.channels.cache.find((c) => c.name === 'application')) {
             message.channel.send('Sorry, you already applied for staff position or there is an application on going right now');

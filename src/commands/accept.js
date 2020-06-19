@@ -52,10 +52,10 @@ module.exports = class extends BaseCommand {
             const dm = await applicant.createDM();
             dm.send(new MessageEmbed()
                 .setColor(0x00FF00)
-                .setTitle('Your Staff Application on BlockPalace was accepted.')
+                .setTitle('Your Staff Application on BlockPalace was approved.')
                 .setTimestamp()
                 .addField('Reason(s)', args.reason)
-            );
+                ).catch(e => { throw e });
         } catch (e) {
             message.channel.send(`${applicant.tag} was not notified about his/her application, He/she had DMs Off`);
         }
