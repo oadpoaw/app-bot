@@ -7,7 +7,7 @@ const { botsettings } = require('../../config.json');
 
 module.exports = class extends BaseCommand {
     constructor() {
-        super('rejet', {
+        super('reject', {
             aliases: [],
             clientPermissions: [],
             cooldown: 10,
