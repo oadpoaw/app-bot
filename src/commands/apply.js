@@ -81,6 +81,7 @@ module.exports = class extends BaseCommand {
         );
         for await (const text of content) {
             await channel.send(new MessageEmbed()
+                .setColor('RANDOM')
                 .setDescription(text)
             );
         }
@@ -96,6 +97,7 @@ module.exports = class extends BaseCommand {
         );
         for await (const text of content) {
             await ch.send(new MessageEmbed()
+                .setColor('RANDOM')
                 .setDescription(text)
             );
         }

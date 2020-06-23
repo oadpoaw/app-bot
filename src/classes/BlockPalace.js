@@ -120,7 +120,7 @@ class BPClient extends Client {
      * @param {Number} length 
      */
     chunkString(str, length) {
-        return str.match(new RegExp('.{1,' + length + '}', 'g'));
+        return str.match(new RegExp(`(.|[\r\n]){1,${length}}`, 'g'));
       }
     /**
      * @returns {Promise<String>}

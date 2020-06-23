@@ -45,13 +45,15 @@ module.exports = class extends BaseCommand {
         ).catch(console.log);
         b.applicants = b.applicants.filter((c) => { return c !== id });
         await b.save();
-        await message.channel.delete('Application... Closed');
-        const ch = await client.channels.fetch(botsettings.logChannelID);
-        ch.send(new MessageEmbed()
-            .setColor('RED')
-            .setAuthor(message.author.tag, message.author.displayAvatarURL() || null)
-            .setDescription(`${type.toUpperCase()} Application \`${id}\` of ${applicant} has been denied for:\n${reason}`)
-            .setTimestamp()
-        );
+        client.setTimeout(() => {
+            await message.channel.delete('Application... Closed');
+            const ch = await client.channels.fetch(botsettings.logChannelID);
+            ch.send(new MessageEmbed()
+                .setColor('RED')
+                .setAuthor(message.author.tag, message.author.displayAvatarURL() || null)
+                .setDescription(`${type.toUpperCase()} Application \`${id}\` of ${applicant} has been denied for:\n${reason}`)
+                .setTimestamp()
+            );
+        }, 10000);
     }
 }
