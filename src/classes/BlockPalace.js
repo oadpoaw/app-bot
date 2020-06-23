@@ -20,8 +20,7 @@ class BPClient extends Client {
         this.logger = Logger;
         this.database = new Database();
         this.dbModels = {
-            application: this.database.import('../models/application'),
-            unban: this.database.import('../models/unbans'),
+            apps: this.database.import('../models/apps'),
         }
         require('../modules/ErrorHandler')(this);
         if (process.argv.includes('-f') || process.argv.includes('--force')) {
@@ -70,13 +69,14 @@ class BPClient extends Client {
      * @param {Number} duration in millieseconds
      * @param {Boolean} obj if true, returns the message object collected not message content
      */
-    async awaitReply(message, author, question, duration = 60000, obj = false) {
+    async awaitReply(message, author, question, duration = 60000, obj = false, del = false, delr = false) {
         const filter = m => m.author.id === author;
-        await message.channel.send(question);
+        const cc = await message.channel.send(question);
         try {
             const collected = await message.channel.awaitMessages(filter, { max: 1, time: duration, errors: ['time'] });
-            if (obj) return collected.first();
-            return collected.first().content;
+            if (delr) await collected.first().delete();
+            if (del) await cc.delete();
+            return obj ? collected.first() : collected.first().content;
         } catch (e) {
             return false;
         }
@@ -114,6 +114,14 @@ class BPClient extends Client {
             return previous;
         }, []);
     }
+    /**
+     * 
+     * @param {String} str 
+     * @param {Number} length 
+     */
+    chunkString(str, length) {
+        return str.match(new RegExp('.{1,' + length + '}', 'g'));
+      }
     /**
      * @returns {Promise<String>}
      * @param {Promise<String>|String} text 

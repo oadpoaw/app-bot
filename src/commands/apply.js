@@ -2,7 +2,7 @@ const BaseCommand = require('../structures/BaseCommand');
 const { Client } = require('../classes/BlockPalace');
 const { Message, MessageEmbed } = require('discord.js');
 
-const { staff_questions: questions } = require('../../config/questions.json');
+const apps = require('../../config/application.json');
 const messages = require('../../config/messages.json');
 const { botsettings } = require('../../config.json');
 
@@ -11,27 +11,30 @@ module.exports = class extends BaseCommand {
         super('apply', {
             aliases: [],
             clientPermissions: ['MANAGE_CHANNELS', 'MANAGE_ROLES'],
-            cooldown: 60 * 60,
-            usage: '',
-            args: false,
+            cooldown: 10,
+            usage: `apply <Type>\nTypes:\nstaff\nunban`,
+            args: true,
         });
     }
     /**
      * 
      * @param {Client} client 
      * @param {Message} message 
-     * @param {Array<String>|JSON} args 
+     * @param {Array<String>} args 
      */
     async execute(client, message, args) {
         await message.delete();
-        const app = await client.dbModels.application.findOne({ where: { user_id: message.author.id } });
-        if (app || message.guild.channels.cache.find((c) => c.name === 'application')) {
-            message.channel.send('Sorry, you already applied for staff position or there is an application on going right now');
-            return true;
-        }
-        const channel = await message.guild.channels.create('application', {
+        const type = args[0].toLowerCase();
+        if (message.channel.parentID === botsettings.category) return message.channel.send(messages.wrongChannel);
+        if (!apps.hasOwnProperty(type)) return message.channel.send(messages.invalidAppType.replace(/{PREFIX}/g, client.prefix)).then((m) => m.delete({ timeout: 10000 }));
+        const app = apps[type];
+        let db = await client.dbModels.apps.findOne({ where: { app_type: type } });
+        if (db && db.applicants && db.applicants.includes(message.author.id)) return message.channel.send(messages.already.replace(/{TYPE}/g, type)).then((m) => m.delete({ timeout: 10000 }));
+        if (!db) db = await client.dbModels.apps.create({ app_type: type });
+        const channel = await message.guild.channels.create(`${type}-${message.author.username}`, {
             type: 'text',
-            topic: `Application ID: ${message.author.id}\nApplicant : ${message.author.tag}`,
+            parent: botsettings.category,
+            topic: `${type} ${message.author.id}`,
             permissionOverwrites: [
                 {
                     id: message.guild.id,
@@ -43,55 +46,58 @@ module.exports = class extends BaseCommand {
                 },
                 {
                     id: client.user.id,
-                    allow: ['MANAGE_CHANNELS', 'VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY']
+                    allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'MANAGE_CHANNELS']
+                },
+                {
+                    id: botsettings.managerRoleID,
+                    allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'MANAGE_CHANNELS']
                 }
             ]
         });
-
-        const msg = await channel.send(`${message.author} Staff Interview on going...`);
-
+        const msg = await channel.send(`${message.author}'s Interview on going...\n\nType \`${client.prefix}cancel\` to cancel the interview`);
         let ApplicationResponse = '';
-
-        for await (const question of questions) {
-            const temp = `${question}\n\nType \`;cancel\` to cancel the interview.`;
-            const response = await client.awaitReply(msg, message.author.id, temp, 60000 * 60);
-            if (!response || response === ';cancel') {
+        for await (const question of app.questions) {
+            const response = await client.awaitReply(msg, message.author.id, `${question}.`, 60000 * 30, false, true, true);
+            if (!response || response === `${client.prefix}cancel`) {
                 ApplicationResponse = 'CANCELLED';
                 break;
             }
-            ApplicationResponse += `> ${question}\nResponse: ${response}\n\n------------------------------------\n`;
+            ApplicationResponse += `> ${question}\n${response}\n\n`;
         }
+        await msg.delete({ timeout: 1000 });
         if (ApplicationResponse === 'CANCELLED') {
-            await channel.send('Application Interview has been cancelled\n\nDeleting this channel in 10 seconds...');
+            await channel.send('Interview has been cancelled\n\nDeleting this channel in 10 seconds...');
             setTimeout(() => {
                 channel.delete();
             }, 10000)
             return true;
         }
-
-        const ctx = `${messages.pending}\n\nDeleting this channel in 10 seconds...`;
-        await channel.send(ctx);
-
-        setTimeout(() => {
-            channel.delete();
-        }, 10000);
-
-        await client.dbModels.application.create(
-            {
-                user_id: message.author.id,
-                data: {
-                    response: ApplicationResponse,
-                    tag: message.author.tag,
-                },
-            }
-        );
-        const logChannel = client.channels.cache.get(botsettings.logChannelID);
-
-        logChannel.send(new MessageEmbed()
+        const copy = ApplicationResponse;
+        const content = client.chunkString(copy, 2048);
+        await channel.send(new MessageEmbed()
             .setColor('RANDOM')
             .setTimestamp()
-            .setAuthor(message.author.tag, message.author.displayAvatarURL() || null)
-            .setDescription(`Someone applied for staff!\nApplication ID: \`${message.author.id}\`\nApplicant: \`${message.author.tag}\`\n\nTo view application response use \`%application --fetch=<APPLICATION ID>\``)
+            .setAuthor(`${message.author.tag}'s ${type} application`, message.author.displayAvatarURL() || null)
         );
+        for await (const text of content) {
+            await channel.send(new MessageEmbed()
+                .setDescription(text)
+            );
+        }
+        await channel.send(app.config.messages.pending);
+        if (!db.applicants || !Array.isArray(db.applicants)) db.applicants = [];
+        db.applicants.push(message.author.id);
+        await db.save();
+        const ch = await client.channels.fetch(botsettings.logChannelID);
+        await ch.send(new MessageEmbed()
+            .setColor('RANDOM')
+            .setTimestamp()
+            .setAuthor(`${message.author.tag}'s ${type} application`, message.author.displayAvatarURL() || null)
+        );
+        for await (const text of content) {
+            await ch.send(new MessageEmbed()
+                .setDescription(text)
+            );
+        }
     }
 }

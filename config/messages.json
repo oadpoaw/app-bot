@@ -4,14 +4,7 @@
     "clientMissingPermissions": "`Error`: Missing Bot Permissions\n```xl\n{PERMS}\n```",
     "missingArguments": "`Error`: Missing Arguments\nThe proper usage would be\n```xl\n{USAGE}\n```",
     "commandError": "`Error`: Unexpected error occured : {ERRORNAME} \n```xl\n{ERROR}\n```",
-    "accepted": "Your staff application has been accepted : {REASON}",
-    "rejected": "Your staff application has been rejected : {REASON}",
-    "creation": "Your staff application interview is now going on {CHANNEL}",
-    "pending": "Your application is now pending for approval.",
-    "defaultReasons": {
-        "accepted": "You've met the requirements and congratulations on your staff position!",
-        "rejected": "You did not met the requirements or unsuitable for the staff position, please try again in 3 months i guess.",
-        "appeal_accepted": "You've met the requirements and congratulations your are now unbanned!",
-        "appeal_rejected": "You did not met the requirements or not worthy for an appeal, please try again in 3 months i guess"
-    }
+    "invalidAppType": "`Error`: Invalid Application type, to see types use `{PREFIX}apptypes`",
+    "already": "`Error`: You already applied for a(n) `{TYPE}` application.",
+    "wrongChannel": "`Error`: You cannot apply in this channel."
 }

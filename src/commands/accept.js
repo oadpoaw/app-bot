@@ -1,9 +1,8 @@
 const BaseCommand = require('../structures/BaseCommand');
 const { Client } = require('../classes/BlockPalace');
 const { Message, MessageEmbed } = require('discord.js');
-
-const { defaultReasons } = require('../../config/messages.json');
 const { botsettings } = require('../../config.json');
+const applications = require('../../config/application.json');
 
 module.exports = class extends BaseCommand {
     constructor() {
@@ -11,22 +10,9 @@ module.exports = class extends BaseCommand {
             aliases: [],
             clientPermissions: [],
             cooldown: 3,
-            usage: 'accept --id=<Application ID>\naccept --id=<Application ID> -r [...Reason]',
-            args: true,
-            argsDefinitions: {
-                arguments: 'string',
-                id: {
-                    type: 'string',
-                    alias: 'i',
-                    default: 'Follow the usage'
-                },
-                reason: {
-                    type: 'string',
-                    alias: ['r', 'm'],
-                    default: defaultReasons.accepted,
-                }
-            }
-        })
+            usage: 'accept [...Reason]',
+            args: false,
+        });
     }
     /**
      * 
@@ -35,30 +21,37 @@ module.exports = class extends BaseCommand {
      * @param {Array<String>|JSON} args 
      */
     async execute(client, message, args) {
-        if (!message.member.roles.cache.has(botsettings.accepterRoleID)) return;
-        const app = await client.dbModels.application.findOne({ where: { user_id: args.id } });
-        if (!app) {
-            message.channel.send(`An Application with an ID of \`${args.id}\` does not exist`);
-            return true;
-        }
-        const applicant = await client.users.fetch(args.id);
-        message.channel.send(new MessageEmbed()
+        if (!message.member.roles.cache.has(botsettings.managerRoleID)) return;
+        if (message.channel.parentID !== botsettings.category) return message.channel.send('This is not an application channel');
+        const [type, id] = message.channel.topic.split(/ +/g);
+        const b = await client.dbModels.apps.findOne({ where: { app_type: type } }).catch(console.log);
+        const app = applications[type];
+        const applicant = await client.users.fetch(id);
+        let reason = app.config.messages.accepted;
+        if (args && args.length) reason = args.join(' ');
+        await message.channel.send(new MessageEmbed()
             .setColor(0x0FF00)
             .setAuthor(message.author.tag, message.author.displayAvatarURL() || null)
-            .setDescription(`Application \`${app.user_id}\` of ${applicant} has been approved for:\n${args.reason}`)
+            .setDescription(`${type.toUpperCase()} Application \`${id}\` of ${applicant} has been approved for:\n${reason}`)
             .setTimestamp()
         );
-        try {
-            const dm = await applicant.createDM();
-            dm.send(new MessageEmbed()
-                .setColor(0x00FF00)
-                .setTitle('Your Staff Application on BlockPalace has been approved')
-                .setTimestamp()
-                .addField('Reason(s)', args.reason)
-                ).catch(e => { throw e });
-        } catch (e) {
-            message.channel.send(`${applicant.tag} was not notified about his/her application, He/she had DMs Off`);
-        }
-        await client.dbModels.application.destroy({ where: { user_id: args.id } });
+        const dm = await applicant.createDM();
+        dm.send(new MessageEmbed()
+            .setColor(0x00FF00)
+            .setAuthor(message.author.tag, message.author.displayAvatarURL() || null)
+            .setTitle(`Your ${type.toUpperCase()} Application on BlockPalace has been approved`)
+            .setTimestamp()
+            .addField('Reason(s)', reason)
+        ).catch(console.log);
+        b.applicants = b.applicants.filter((c) => { return c !== id });
+        await b.save();
+        await message.channel.delete('Application... Closed');
+        const ch = await client.channels.fetch(botsettings.logChannelID);
+        ch.send(new MessageEmbed()
+            .setColor(0x0FF00)
+            .setAuthor(message.author.tag, message.author.displayAvatarURL() || null)
+            .setDescription(`${type.toUpperCase()} Application \`${id}\` of ${applicant} has been approved for:\n${reason}`)
+            .setTimestamp()
+        );
     }
 }

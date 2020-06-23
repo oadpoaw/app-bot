@@ -5,7 +5,8 @@
         "warnings": true
     },
     "botsettings": {
-        "accepterRoleID": "607953764585832449",
-        "logChannelID": "720912038393806870"
+        "managerRoleID": "607953764585832449",
+        "logChannelID": "724866619431714888",
+        "category": "723347295386730537"
     }
 }

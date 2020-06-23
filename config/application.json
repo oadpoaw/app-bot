@@ -1,0 +1,41 @@
+{
+    "staff": {
+        "config": {
+            "messages": {
+                "pending": "Your staff application is now pending for approval.",
+                "accepted": "You've met the requirements and congratulations on your staff position!",
+                "denied": "You did not met the requirements or unsuitable for the staff position, please try again in 3 months i guess.",
+                "ongoing": "Your staff application interview is now on going in {CHANNEL}"
+            }
+        },
+        "questions": [
+            "What is your IGN (in game name)?",
+            "What sub-server do you wish to apply for? eg. Skyblock, Prison",
+            "How old are you?",
+            "How long have you played on the network?",
+            "Have you been muted/banned in the last 30 days?",
+            "How much can you play weekly? eg. 5hr/10h/15h",
+            "Why do you want to become a staff member? (What motivated you to apply)",
+            "In which way can you contribute to the staff team?",
+            "Anything else you would like to add?"
+        ]
+    },
+    "unban": {
+        "config": {
+            "messages": {
+                "pending": "Your Ban Appeal is now pending for approval.",
+                "accepted": "You've met the requirements and congratulations you are now unbanned!",
+                "denied": "You did not met the requirements or not worthy for an appeal, please try again in 3 months i guess",
+                "ongoing": "Your Ban Appeal interview is now on going in {CHANNEL}"
+            }
+        },
+        "questions": [
+            "What is your IGN (in game name)?",
+            "On which gamemode did you get banned on and for what",
+            "Why should we consider your appeal?",
+            "Do you believe this was a mistake? (If so reply with why otherwise type 'No')",
+            "Do you feel guilty?",
+            "Anything else we should be aware of?"
+        ]
+    }
+}

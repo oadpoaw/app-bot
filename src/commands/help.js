@@ -53,8 +53,8 @@ module.exports = class extends BaseCommand {
             .setColor('RANDOM')
             .setTitle('Commands')
             .setDescription(`Prefix: \`${prefix}\`\n\`help [Command]\``)
-            .addField('Commands', `\`ping\`, \`apply\`, \`appeal\`, \`help\``)
-            .addField('Admin Commands', `\`applications\`, \`accept\`, \`reject\`, \`accept-appeal\`, \`appeals\`, \`reject-appeal\``)
+            .addField('Commands', `\`ping\`, \`apply\`, \`help\``)
+            .addField('Admin Commands', `\`accept\`, \`reject\``)
             .setFooter('Powered by undefine')
         );
     }

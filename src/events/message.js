@@ -37,16 +37,8 @@ module.exports = class MessageEvent extends BaseEvent {
         const commandName = args.shift().toLowerCase();
         const command = client.commands.get(commandName) || client.commands.find(c => c.options.aliases && c.options.aliases.includes(commandName));
         if (!command) return;
-        if (command.options.clientPermissions) {
-            if (!message.guild.me.permissions.has(command.options.clientPermissions)) {
-                message.channel.send(messages.clientMissingPermissions.replace(/{PERMS}/g, command.options.clientPermissions.join(' ')))
-                return;
-            }
-        }
-        if (command.options.args && !args.length && command.options.usage) {
-            message.channel.send(messages.missingArguments.replace(/{USAGE}/g, command.options.usage));
-            return;
-        }
+        if (command.options.clientPermissions && !message.guild.me.permissions.has(command.options.clientPermissions)) return message.channel.send(messages.clientMissingPermissions.replace(/{PERMS}/g, command.options.clientPermissions.join(' '))).then((c) => c.delete({ timeout: 2000 })).catch(console.log);
+        if (command.options.args && !args.length && command.options.usage) return message.channel.send(messages.missingArguments.replace(/{USAGE}/g, command.options.usage)).then((c) => c.delete({ timeout: 2000 })).catch(console.log);
         if (!client.cooldowns.has(command.name)) client.cooldowns.set(command.name, new Collection());
         const now = Date.now();
         const timestamps = client.cooldowns.get(command.name);
@@ -55,8 +47,7 @@ module.exports = class MessageEvent extends BaseEvent {
             const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
             if (now < expirationTime) {
                 const timeLeft = ms(expirationTime - now);
-                message.channel.send(messages.commandthrottle.replace(/{COOLDOWN}/g, timeLeft.toString()));
-                return;
+                return message.channel.send(messages.commandthrottle.replace(/{COOLDOWN}/g, timeLeft.toString())).then((c) => c.delete({ timeout: 2000 })).catch(console.log);
             }
         }
         try {
@@ -69,8 +60,7 @@ module.exports = class MessageEvent extends BaseEvent {
                 }, cooldownAmount);
             }
         } catch (e) {
-            const content = client.trim(await client.clean(messages.commandError.replace(/{ERRORNAME}/g, e.name).replace(/{ERROR}/g, e)), 1024)
-            message.channel.send(`${content}`);
+            message.channel.send(client.trim(messages.commandError.replace(/{ERRORNAME}/g, e.name).replace(/{ERROR}/g, e), 2048));
         }
 
     }

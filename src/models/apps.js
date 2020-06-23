@@ -1,14 +1,14 @@
 module.exports = (sequelize, DataType) => {
-    return sequelize.define('unbans', {
-        user_id: {
+    return sequelize.define('applications', {
+        app_type: {
             type: DataType.STRING,
-            unique: true,
             primaryKey: true,
+            unique: true,
         },
-        data: {
+        applicants: {
             type: DataType.JSON,
             allowNull: false,
-            defaultValue: {},
+            defaultValue: [],
         },
     }, {
         timestamps: false,
