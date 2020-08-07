@@ -1,1 +1,1 @@
-# bp-app-bot
+# Application Bot for Discord
