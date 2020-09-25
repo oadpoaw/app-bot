@@ -4,19 +4,20 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
+    "start": "node .",
     "test": "node .",
     "reset-database": "node . --force"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/oadpoaw/some-bot.git"
+    "url": "git+https://github.com/oadpoaw/app-bot.git"
   },
   "author": "undefine#6084",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/oadpoaw/some-bot/issues"
+    "url": "https://github.com/oadpoaw/app-bot/issues"
   },
-  "homepage": "https://github.com/oadpoaw/some-bot#readme",
+  "homepage": "https://github.com/oadpoaw/app-bot#readme",
   "dependencies": {
     "chalk": "^4.1.0",
     "discord.js": "^12.3.1",
