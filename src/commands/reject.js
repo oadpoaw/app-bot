@@ -45,7 +45,7 @@ module.exports = class extends BaseCommand {
         ).catch(console.log);
         b.applicants = b.applicants.filter((c) => { return c !== id });
         await b.save();
-        client.setTimeout(() => {
+        client.setTimeout(async () => {
             await message.channel.delete('Application... Closed');
             const ch = await client.channels.fetch(botsettings.logChannelID);
             ch.send(new MessageEmbed()
