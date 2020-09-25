@@ -1,5 +1,5 @@
 const BaseCommand = require('../structures/BaseCommand');
-const { Client } = require('../classes/BlockPalace');
+const { Client } = require('../classes/AppBot');
 const { Message, MessageEmbed } = require('discord.js');
 const { botsettings } = require('../../config.json');
 const applications = require('../../config/application.json');
@@ -39,7 +39,7 @@ module.exports = class extends BaseCommand {
         dm.send(new MessageEmbed()
             .setColor('RED')
             .setAuthor(message.author.tag, message.author.displayAvatarURL() || null)
-            .setTitle(`Your ${type.toUpperCase()} Application on BlockPalace has been denied`)
+            .setTitle(`Your ${type.toUpperCase()} Application on AppBot has been denied`)
             .setTimestamp()
             .addField('Reason(s)', reason)
         ).catch(console.log);

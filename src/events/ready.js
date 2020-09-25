@@ -1,6 +1,6 @@
 const BaseEvent = require('../structures/BaseEvent');
 
-const { Client } = require('../classes/BlockPalace');
+const { Client } = require('../classes/AppBot');
 
 module.exports = class Ready extends BaseEvent {
     constructor() {

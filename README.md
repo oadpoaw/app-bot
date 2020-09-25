@@ -40,6 +40,16 @@ npm run reset-database # initialize database
 npm run start # to start the bot
 ```
 
+## Commands
+
+```sh
+apply <applicationType>
+help
+ping
+accept [...Reason] # on the current application channel
+deny [...Reason] # on the current application channel
+```
+
 ## Run tests
 
 ```sh
@@ -60,5 +70,3 @@ Give a ⭐️ if this project helped you!
 
 Copyright © 2020 [undefine#6084](https://github.com/oadpoaw).<br />
 This project is [MIT](https://github.com/oadpoaw/app-bot/blob/master/LICENSE) licensed.
-
-**

@@ -1,5 +1,5 @@
 const BaseCommand = require('../structures/BaseCommand');
-const { Client } = require('../classes/BlockPalace');
+const { Client } = require('../classes/AppBot');
 const { Message } = require('discord.js');
 
 module.exports = class extends BaseCommand {

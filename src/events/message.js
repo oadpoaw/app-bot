@@ -1,6 +1,6 @@
 
 const { Message, Collection } = require('discord.js');
-const { Client } = require('../classes/BlockPalace');
+const { Client } = require('../classes/AppBot');
 
 const BaseEvent = require('../structures/BaseEvent');
 const messages = require('../../config/messages.json');
