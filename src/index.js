@@ -1,6 +1,6 @@
 require('dotenv').config();
-const BlockPalace = require('./classes/BlockPalace');
-const client = new BlockPalace.Client();
+const AppBot = require('./classes/AppBot');
+const client = new AppBot.Client();
 
 (async function() {
     await client.registerCommands('../commands/');

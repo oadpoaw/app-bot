@@ -6,8 +6,9 @@ const BaseCommand = require('../structures/BaseCommand');
 const BaseEvent = require('../structures/BaseEvent');
 const Database = require('../modules/Database');
 const Logger = require('../utils/Logger');
+const apps = require('../models/apps');
 
-class BPClient extends Client {
+class AppBotClient extends Client {
     constructor() {
         super({
             partials: ['MESSAGE', 'REACTION', 'CHANNEL'],
@@ -20,11 +21,13 @@ class BPClient extends Client {
         this.logger = Logger;
         this.database = new Database();
         this.dbModels = {
-            apps: this.database.import('../models/apps'),
+            apps: apps(this.database),
         }
         require('../modules/ErrorHandler')(this);
         if (process.argv.includes('-f') || process.argv.includes('--force')) {
             this.database.sync({ force: true });
+            this.logger.info('Database Table has been dropped!');
+            process.exit();
         }
         this.database.authenticate().then(() => {
             this.logger.info('Database Connection Established!');
@@ -137,5 +140,5 @@ class BPClient extends Client {
 }
 
 module.exports = {
-    Client: BPClient
+    Client: AppBotClient
 }
