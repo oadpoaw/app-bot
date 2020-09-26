@@ -5,8 +5,8 @@
         "warnings": true
     },
     "botsettings": {
-        "managerRoleID": "607953764585832449",
-        "logChannelID": "724866619431714888",
-        "category": "723347295386730537"
+        "managerRoleID": "manager role id who can accept/reject/delete applications",
+        "logChannelID": "the log channel id where applications are being logged",
+        "category": "the category where applications are being viewed/sent"
     }
 }
