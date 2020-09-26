@@ -19,6 +19,7 @@
 ## Install
 
 ```sh
+git clone https://github.com/oadpoaw/app-bot.git
 npm install
 ```
 
