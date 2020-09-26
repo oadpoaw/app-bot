@@ -28,6 +28,11 @@ Make an .env file
 BOT_TOKEN=placebottokenheretoworkgotodiscord.com/developers/applicationsokokxdxd
 ```
 
+Configure it to your will!
+[config.json](config.json)
+[messages.json](config/messages.json)
+[application](config/application.json)
+
 ## Usage
 
 ```sh
