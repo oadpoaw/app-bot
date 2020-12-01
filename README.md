@@ -26,6 +26,7 @@ npm install
 Make an .env file
 ```
 BOT_TOKEN=placebottokenheretoworkgotodiscord.com/developers/applicationsokokxdxd
+DEFAULT_PREFIX=!
 ```
 
 Configure it to your will! customizable prompts/questions etc!
