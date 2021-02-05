@@ -57,7 +57,7 @@ module.exports = class extends BaseCommand {
         const msg = await channel.send(`${message.author}'s Interview on going...\n\nType \`${client.prefix}cancel\` to cancel the interview`);
         let ApplicationResponse = '';
         for await (const question of app.questions) {
-            const response = await client.awaitReply(msg, message.author.id, `${question}.`, 60000 * 30, false, true, true);
+            const response = await client.awaitReply(msg, message.author.id, `${question}`, 60000 * 30, false, true, true);
             if (!response || response === `${client.prefix}cancel`) {
                 ApplicationResponse = 'CANCELLED';
                 break;
