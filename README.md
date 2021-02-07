@@ -38,7 +38,7 @@ Configure it to your will! customizable prompts/questions etc!
 
 ```sh
 npm run reset-database # initialize database
-npm run start # to start the bot
+npm start # to start the bot
 ```
 
 ## Commands
@@ -58,8 +58,6 @@ npm run test
 ```
 
 ## Author
-
-👤 **undefine#6084**
 
 * Github: [@oadpoaw](https://github.com/oadpoaw)
 
