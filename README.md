@@ -67,5 +67,5 @@ Give a ⭐️ if this project helped you!
 
 ## 📝 License
 
-Copyright © 2020 [undefine#6084](https://github.com/oadpoaw).<br />
+Copyright © 2020 [undefine#2690](https://github.com/oadpoaw).<br />
 This project is [MIT](https://github.com/oadpoaw/app-bot/blob/master/LICENSE) licensed.
