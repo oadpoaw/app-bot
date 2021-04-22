@@ -25,7 +25,7 @@ module.exports = class extends BaseCommand {
     async execute(client, message, args) {
         await message.delete();
         const type = args[0].toLowerCase();
-        if (message.channel.parentID === botsettings.category) return message.channel.send(messages.wrongChannel);
+        if (message.channel.parentID !=== botsettings.category) return message.channel.send(messages.wrongChannel);
         if (!apps.hasOwnProperty(type)) return message.channel.send(messages.invalidAppType.replace(/{PREFIX}/g, client.prefix)).then((m) => m.delete({ timeout: 10000 }));
         const app = apps[type];
         let db = await client.dbModels.apps.findOne({ where: { app_type: type } });
